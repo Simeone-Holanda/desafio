@@ -17,8 +17,10 @@ class CardRepository(BaseRepository):
             return: Lista de tags no formato de dicionarios
             """
         list_data = []
+        print(tag_filter)
         for document in self.get_conn().find({}):
             for tag in document['tags']:
-                if tag_filter['name'] in tag['name']:
+                if tag_filter['name'] == tag['name']:
+                    print(tag)
                     list_data.append(document)
         return list_data
