@@ -1,11 +1,9 @@
 from src.infrastructure.config import Database
-from src.applications.CLI import import_csv
-from src.app import app
+from src.applications.CLI import start_service
 
 try:
     Database.set_connection()
-    #import_csv()
-    app.run(port=8000)
+    start_service()
 except Exception as ex:
     print("Error - ",ex)
     raise ex
