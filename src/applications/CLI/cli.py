@@ -20,10 +20,8 @@ def start_service(file):
     """
     if file != '':
         data = pd.read_csv(file)
-        print(data['tag'][2])
         for num_line,linha in enumerate(data['text']):
             line_tag = str(data['tag'][num_line])
-            print(line_tag)
             if ';' in line_tag:
                 line_tags = line_tag.split(';')
                 list_interface_tag = list(map(lambda tag_name: Tag(id= Tag.generate_id(), name=tag_name),line_tags))
@@ -31,7 +29,6 @@ def start_service(file):
             else:
                 tag = [Tag(id= Tag.generate_id(), name=line_tag)]
                 interface_card = CreateCardInterface(text=linha,tags=tag)
-                print(interface_card)
             CreateCard.run(interface_card)
         app.run(port=8000)
     else:
