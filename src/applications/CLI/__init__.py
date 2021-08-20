@@ -1,1 +1,1 @@
-from .cli import import_csv
+from .cli import start_service

@@ -11,8 +11,7 @@ class CreateTag:
         :param
             tag_name - nome da tag 
         """
-        tag = TagRepository().check_tag_exist(tag_name)
-        if tag:
+        if TagRepository().check_tag_exist(tag_name):
             return abort(409,'Information conflict - Tag already exists.')
         
     @classmethod

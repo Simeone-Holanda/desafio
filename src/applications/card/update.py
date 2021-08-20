@@ -16,7 +16,7 @@ class UpdateCard:
         abort(404,'Not found card')
     
     @classmethod
-    def check_tags_exist(cls, tags):
+    def check_exist_tag(cls, tags):
         """ Verifica se existe uma tag pelo nome, caso exista retorna ela"""
         list_tags = []
         for tag in tags:
@@ -32,7 +32,7 @@ class UpdateCard:
         """ Atualiza os dados de um card """
         
         card_old = cls.check_exist_card(card_id)
-        obj_tags = cls.check_tags_exist(data.tags)
+        obj_tags = cls.check_exist_tag(data.tags)
         new_card = Card(id=card_id,
                         text=data.text,
                         data_criacao=card_old['data_criacao'],
