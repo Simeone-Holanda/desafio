@@ -23,9 +23,15 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: 
-                  $ref: '#/components/schemas/Card'
+                type: object
+                properties:
+                  code: 
+                    default: '200'
+                    type: string
+                  data: 
+                    type: array
+                    items: 
+                      $ref: '#/components/schemas/Card'
         '500':
           $ref: '#/components/responses/500'
   /card/:
@@ -44,11 +50,14 @@ paths:
                   properties:
                     code:
                       default: '200'
-                      type: integer
+                      type: string
                     message:
                      type: string
+                     default: Created card with sucess.
         '400':
           $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
       requestBody:
         content:
           application/json:
@@ -60,7 +69,6 @@ paths:
                     type: string
                   tags:
                     type: string
-                    
         description: Data of the card to be saved.
         required: true
             
@@ -68,13 +76,12 @@ paths:
     put:
       tags:
         - Card
-      summary: Retrieves cards in the database by id
-      description: Get a card's data by id
+      summary:  Update a card into the database.
       parameters:
         - name: _id
           in: path
           required: true
-          description: Id of admin.
+          description: Card id.
           example: '5c86d00c7a8618923481b48b'
           schema:
             type: string
@@ -88,7 +95,13 @@ paths:
                     default: 'card text'
                     type: string
                   tags:
-                    type: string
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name: 
+                          type: string
+                          default: tag name
       responses:
         '200':
           description: Get card data for id.
@@ -99,9 +112,12 @@ paths:
                   properties:
                     code:
                       default: '200'
-                      type: integer
+                      type: string
                     message:
                      type: string
+                     default: Updated card with sucess.
+        '400':
+          $ref: '#/components/responses/400'
         '404':
           $ref: '#/components/responses/404'
         '500':
@@ -110,16 +126,19 @@ paths:
     post:
       tags:
         - Card
-      summary: Update a card into the database.
-      description: Get all data from a card
+      summary: Get all data by tag from a card
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                  tag:
+                  id: 
                     type: string
+                    default: 5c86d00c7a8618923481b48b
+                  name:
+                    type: string
+                    default: tag name
         description: Tag for data filter .
         required: true
       responses:
@@ -132,20 +151,25 @@ paths:
                   properties:
                     code:
                       type: integer
-                    mensage:
-                     type: string
+                      default: '200'
+                    data:
+                     type: array
+                     items:
+                        $ref: '#/components/schemas/Card'
         '400':
           $ref: '#/components/responses/400'
 
         '404':
           $ref: '#/components/responses/404'
 
+        '500':
+          $ref: '#/components/responses/500'
+
   /card/delete/{id}:
     delete:
       tags:
         - Card
       summary: Delete a card into the database.
-      description: Get a card's data by id
       parameters:
         - name: _id
           in: path
@@ -159,6 +183,7 @@ paths:
           $ref: '#/components/responses/204'
         '400':
           $ref: '#/components/responses/400'
+
         '500':
           $ref: '#/components/responses/500'     
   /tags/:
@@ -173,9 +198,20 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: 
-                  $ref: '#/components/schemas/Tag'
+                type: object
+                properties:
+                  code:
+                    type: string
+                    default: '200'
+                  data: 
+                    type: array
+                    items: 
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        nome:
+                          type: string
         '500':
           $ref: '#/components/responses/500'
   /tag/:
@@ -210,7 +246,19 @@ paths:
                      type: string
         '400':
           $ref: '#/components/responses/400'
-
+          
+        '409':
+          description: Returns tag id and operation code.
+          content:
+            application/json:
+              schema: 
+                  type: object
+                  properties:
+                    code:
+                      default: '409'
+                      type: string
+                    message:
+                     type: string
         '500':
           $ref: '#/components/responses/500'
 
@@ -246,10 +294,15 @@ paths:
                     code:
                       default: 200
                       type: integer
-                    _id:
+                    message:
                      type: string
+                     default: Updated tag with sucess.
+        '400':
+          $ref: '#/components/responses/400'
+
         '404':
           $ref: '#/components/responses/404'
+
         '500':
           $ref: '#/components/responses/500' 
 
@@ -263,13 +316,14 @@ paths:
         - name: _id
           in: path
           required: true
-          description: Id of admin.
           example: '5c86d00c7a8618923481b48b'
           schema:
             type: string
       responses:
         '204':
           $ref: '#/components/responses/204'
+        '400':
+          $ref: '#/components/responses/400'
         '404':
           $ref: '#/components/responses/404'
         '500':
@@ -303,12 +357,13 @@ components:
       Tag:
           type: object
           properties:  
-            _id:
+            code: 
               type: string
-              description: "Login of card"
-            nome:
+              default: '200'
+            id:
               type: string
-              description: "Password of card"
+            name:
+              type: string
       Error:
           type: object
           required:
@@ -374,6 +429,7 @@ components:
                 description: The code of return.
               message:
                   type: string
+                  default: Error message.
                   description: Return mensage.
 
     '500':
