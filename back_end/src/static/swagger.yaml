@@ -1,0 +1,452 @@
+
+openapi: "3.0.1"
+
+info:
+  version: 1.0.0
+  title: API - CARDS and TAGS
+  description: API to crud cards and tags
+  
+servers:
+  - description: Local Host HTTP
+    url:  http://127.0.0.1:8000/
+
+paths:
+  /cards/:
+    get:
+      tags:
+        - Card
+      summary: Recovers all cards in the database
+      description: Get all data from a card
+      responses:
+        '200':
+          description: Requested card data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code: 
+                    default: '200'
+                    type: string
+                  data: 
+                    type: array
+                    items: 
+                      $ref: '#/components/schemas/Card'
+        '500':
+          $ref: '#/components/responses/500'
+  /card/:
+    post:
+      tags:
+        - Card
+      summary: Insert a card into the database.
+
+      responses:
+        '200':
+          description: Returns card id and operation code.
+          content:
+            application/json:
+              schema: 
+                  type: object
+                  properties:
+                    code:
+                      default: '200'
+                      type: string
+                    message:
+                     type: string
+                     default: Created card with sucess.
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+                type: object
+                properties:
+                  texto:
+                    default: 'card text'
+                    type: string
+                  tags:
+                    type: string
+        description: Data of the card to be saved.
+        required: true
+            
+  /card/{id}/:
+    put:
+      tags:
+        - Card
+      summary:  Update a card into the database.
+      parameters:
+        - name: _id
+          in: path
+          required: true
+          description: Card id.
+          example: '5c86d00c7a8618923481b48b'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+                type: object
+                properties:
+                  texto:
+                    default: 'card text'
+                    type: string
+                  tags:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name: 
+                          type: string
+                          default: tag name
+      responses:
+        '200':
+          description: Get card data for id.
+          content:
+            application/json:
+              schema: 
+                  type: object
+                  properties:
+                    code:
+                      default: '200'
+                      type: string
+                    message:
+                     type: string
+                     default: Updated card with sucess.
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+  /card/tag:
+    post:
+      tags:
+        - Card
+      summary: Get all data by tag from a card
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  id: 
+                    type: string
+                    default: 5c86d00c7a8618923481b48b
+                  name:
+                    type: string
+                    default: tag name
+        description: Tag for data filter .
+        required: true
+      responses:
+        '200':
+          description: Returns card id and operation code.
+          content:
+            application/json:
+              schema: 
+                  type: object
+                  properties:
+                    code:
+                      type: integer
+                      default: '200'
+                    data:
+                     type: array
+                     items:
+                        $ref: '#/components/schemas/Card'
+        '400':
+          $ref: '#/components/responses/400'
+
+        '404':
+          $ref: '#/components/responses/404'
+
+        '500':
+          $ref: '#/components/responses/500'
+
+  /card/delete/{id}:
+    delete:
+      tags:
+        - Card
+      summary: Delete a card into the database.
+      parameters:
+        - name: _id
+          in: path
+          required: true
+          description: Card id.
+          example: '5c86d00c7a8618923481b48b'
+          schema:
+            type: string
+      responses:
+        '204':
+          $ref: '#/components/responses/204'
+        '400':
+          $ref: '#/components/responses/400'
+
+        '500':
+          $ref: '#/components/responses/500'     
+  /tags/:
+    get:
+      tags:
+        - Tag
+      summary: Recovers all tags in the database
+      description: Get all data from a tags
+      responses:
+        '200':
+          description: Requested tags data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    default: '200'
+                  data: 
+                    type: array
+                    items: 
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        nome:
+                          type: string
+        '500':
+          $ref: '#/components/responses/500'
+  /tag/:
+    post:
+      tags:
+        - Tag
+      summary: Insert a tag into the database.
+      description: Get all data from a tag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+        description: Data of the tag to be saved.
+        required: true
+
+      responses:
+        '200':
+          description: Returns tag id and operation code.
+          content:
+            application/json:
+              schema: 
+                  type: object
+                  properties:
+                    code:
+                      default: 200
+                      type: integer
+                    _id:
+                     type: string
+        '400':
+          $ref: '#/components/responses/400'
+          
+        '409':
+          description: Returns tag id and operation code.
+          content:
+            application/json:
+              schema: 
+                  type: object
+                  properties:
+                    code:
+                      default: '409'
+                      type: string
+                    message:
+                     type: string
+        '500':
+          $ref: '#/components/responses/500'
+
+  /tag/{id}:
+    put:
+      tags:
+        - Tag
+      summary: Retrieves cards in the database by id
+      description: Get a card's data by id
+      parameters:
+        - name: _id
+          in: path
+          required: true
+          example: '5c86d00c7a8618923481b48b'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+      responses:
+        '200':
+          description: Get tag data by id.
+          content:
+            application/json:
+              schema: 
+                  type: object
+                  properties:
+                    code:
+                      default: 200
+                      type: integer
+                    message:
+                     type: string
+                     default: Updated tag with sucess.
+        '400':
+          $ref: '#/components/responses/400'
+
+        '404':
+          $ref: '#/components/responses/404'
+
+        '500':
+          $ref: '#/components/responses/500' 
+
+  /tag/delete/{id}:
+    delete:
+      tags:
+        - Tag
+      summary: Retrieves tag in the database by id
+      description: delete a tag data by id
+      parameters:
+        - name: _id
+          in: path
+          required: true
+          example: '5c86d00c7a8618923481b48b'
+          schema:
+            type: string
+      responses:
+        '204':
+          $ref: '#/components/responses/204'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500' 
+              
+components:
+  schemas:
+      Card:
+          type: object
+          properties:  
+            _id: 
+              readOnly: true
+              type: string
+              description: "Id of card in database"
+            texto: 
+              type: string
+              description: "Card description"
+            data_criacao: 
+              type: string
+              format: date
+              description: "cri"
+            data_modificacao:
+              type: string
+              format: date
+              description: "Data de modificação"
+            tags:
+              description: "Tags do card"
+              type: array
+              items: 
+                $ref: '#/components/schemas/Tag'
+      Tag:
+          type: object
+          properties:  
+            code: 
+              type: string
+              default: '200'
+            id:
+              type: string
+            name:
+              type: string
+      Error:
+          type: object
+          required:
+            - code
+            - message
+
+          properties:
+            code:
+              type: string
+              description: Code of error
+              example: '200'
+            message:
+              type: string
+              example: Operation performed successfully.
+
+  responses:
+
+    '204':
+      description: >-
+        Operation performed successfully. There is no data to be returned
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                default: 204
+                type: integer
+                description: The code of return.
+              message:
+                  type: string
+                  description: Return mensage.
+
+    '400':
+      description: >-
+        Request can not be met, syntactically incorrect or violates the
+        schema. Normally it occurs due to validation issues, such as fields
+        that are expected in the request body and not passed.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                default: 400
+                type: integer
+                description: The code of return.
+              message:
+                  type: string
+                  description: Return mensage.
+    '404':
+      description: >-
+        Specified resource does not exist. Usually when the URI is incorrect
+        or the resource is not found, or even no longer exists.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                default: 404
+                type: integer
+                description: The code of return.
+              message:
+                  type: string
+                  default: Error message.
+                  description: Return mensage.
+
+    '500':
+      description: >-
+        An internal server error occurred. Although the client appears to
+        provide a correct request, the server encountered an unexpected
+        condition that prevented it from responding to the request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                default: 500
+                type: integer
+                description: The code of return.
+              message:
+                  type: string
+                  description: Return mensage.
+                  example: Internal server error.
