@@ -17,10 +17,12 @@ export default {
 <style scoped>
 
 .message-container{
-    color: #ED4D77;
+    color: #e42b5d;
     background-color: #d697a8;
     padding: 10px;
     border-radius: 8px;
+    font-weight: bolder;
+    width: 382px;
 }
 
 </style>

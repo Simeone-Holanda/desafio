@@ -34,7 +34,7 @@ export default {
         text: '',
         tags : [{
           name: ''
-        }]
+        },]
       },
       msg: null
     }
@@ -50,7 +50,7 @@ export default {
           console.log(error, 'nao funcionou')
         })
     }
-  }
+  },
 }
 
 </script>

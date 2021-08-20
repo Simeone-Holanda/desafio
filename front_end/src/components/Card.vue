@@ -1,7 +1,14 @@
 <template>
   <div id="card">
     <p>{{texto}}</p>  
-    <span id="tag">{{tag}}</span>
+    <span id="tag" v-for="(tg,indice) in tag" :key="indice">
+      <span v-if="Array.isArray(tg.name)"> 
+        <span v-for="(name,indice) in tg.name" :key="indice"> {{name}}</span>
+        </span>
+      <span v-else>
+        {{tg.name}}</span>
+     
+    </span>
     <br>
   </div>
 </template>

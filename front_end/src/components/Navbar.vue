@@ -1,10 +1,10 @@
 <template>
     <div id="nav">
         <div id="links"> 
-            <router-link to="/" id=logo-img>
+            <router-link to="/home" id=logo-img>
                 <img :src="logo">
             </router-link>
-                <i class="large material-icons icon-blue"> <img src="/img/perfil.png" id="perfil"> </i>
+                <i> <img src="/img/perfil.png" id="perfil"> </i>
             <router-link to="/insights" id="logo-url">
                 <img src="/img/add.svg" >
             </router-link>
@@ -24,7 +24,7 @@ export default {
     props: ['logo'],
     components:{
     Title
-  }
+  },
 }
 </script>
 

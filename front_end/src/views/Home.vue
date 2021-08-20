@@ -1,17 +1,31 @@
 <template>
   <div class="home">
       <Navbar :logo="logo_src" class="navbar"/>
-      <span v-for="(card,indc) in cards" v-bind:key="indc"> 
-        <span v-if="indc == 5">
-        <div id="divBusca">
-          <form action="http://localhost:8080/home" v-on:submit.prevent="find_by_tag">
-              <input  v-model="tag.name" type="text" id="txtBusca" placeholder="Buscar..."/>
-              <button type="submit" id="button"><img src="/img/search.png" id="btnBusca" alt="Buscar"/></button>
-          </form>
-        </div>
-        </span>
-        <Card id="card" :texto="card.text" :tag="card.tags[0].name" :indice="indc" />
+      <span v-if="cards.length == 0">
+        <br><br>
+        <Message :msg="msg" :v-show="msg"/>
       </span>
+      <span v-else>
+         <span v-for="(card,indc) in cards" v-bind:key="indc"> 
+            <span v-if="indc == 5">
+              <div id="divBusca">
+                <form action="http://localhost:8080/home" v-on:submit.prevent="find_by_tag">
+                    <input  v-model="tag.name" type="text" id="txtBusca" placeholder="Buscar..."/>
+                    <button type="submit" id="button"><img src="/img/search.png" id="btnBusca" alt="Buscar"/></button>
+                </form>
+              </div>
+            </span>
+            <Card id="card" :texto="card.text" :tag="card.tags[0].name" :indice="indc" />
+        </span>
+        <span v-if="cards.length < 5"> <div id="divBusca">
+                <form action="http://localhost:8080/home" v-on:submit.prevent="find_by_tag">
+                    <input  v-model="tag.name" type="text" id="txtBusca" placeholder="Buscar..."/>
+                    <button type="submit" id="button"><img src="/img/search.png" id="btnBusca" alt="Buscar"/></button>
+                </form>
+              </div>
+        </span>
+      </span>
+     
 
    
   </div>
@@ -23,6 +37,7 @@
 <script>
 import Card from "@/components/Card.vue";
 import Navbar from '@/components/Navbar.vue';
+import Message from '@/components/Message.vue';
 import axios from 'axios'
 
 const url = 'http://127.0.0.1:8000/card/tag'
@@ -30,7 +45,7 @@ const url = 'http://127.0.0.1:8000/card/tag'
 export default {
   name: "Home",
   components: {
-    Card, Navbar
+    Card, Navbar, Message
   },
   data(){
     return {
@@ -39,7 +54,8 @@ export default {
       tag: {
         name: ''
       },
-      data_by_tag: ''
+      data_by_tag: '',
+      msg: 'Você ainda não tem nenhum card salvo.'
     }
   },
   methods: {
