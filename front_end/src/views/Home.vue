@@ -63,7 +63,7 @@ export default {
     console.log("=--=-=-=-=-=-==-=-=-=-=-=-=-=-=")
     axios.post(url, this.tag)
       .then((response) => {
-        console.log(this.cards = response.data.data)
+        this.cards = response.data.data
       })
       .catch((error) => {
         console.log(error, 'nao funcionou')
