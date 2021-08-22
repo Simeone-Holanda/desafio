@@ -50,7 +50,7 @@
     **Entrando no ambiente virtual:** <br>
     windows:
     ```
-    . venv/Script/activate
+    . venv/Scripts/activate
     ```
     No linux vai ser algo assim:
     ```
